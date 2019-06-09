@@ -67,7 +67,6 @@ SettingsStack.navigationOptions = {
   ),
 };
 
-// TODO: make about show up as main screen the first time you load the app
 export default createBottomTabNavigator({
   HomeStack,
   LinksStack,

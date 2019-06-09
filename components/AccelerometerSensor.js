@@ -10,6 +10,8 @@ import {
 import axios from 'axios'
 import { FontAwesome } from '@expo/vector-icons';
 
+const dataUrl = 'https://potholes-api.herokuapp.com/raw'
+
 export default class AccelerometerSensor extends React.Component {
   state = {
     accelerometerData: {},
@@ -50,17 +52,18 @@ export default class AccelerometerSensor extends React.Component {
   _handleAppStateChange = (nextAppState) => {
     switch (nextAppState) {
       case 'active':
-        console.log('app has come to the foreground!');
+        // console.log('app has come to the foreground!');
         break;
       case 'background':
-        console.log('app has come to the background!');
-        axios.post('https://potholes-api.herokuapp.com/raw', this.state.data)
+        // console.log('app has come to the background!');
+        this._saveData();
+        axios.post(dataUrl, this.state.data)
         // this.setState({
         //   subscribed: false,
         // }, this._unsubscribe)
         break;
       case 'inactive':
-        console.log('app is inactive!');
+        // console.log('app is inactive!');
         break;
     }
     this.setState({appState: nextAppState});
@@ -99,8 +102,6 @@ export default class AccelerometerSensor extends React.Component {
     }
   }
 
-  // TODO: unsubscribe on backgrounding
-
   _slow = () => {
     Accelerometer.setUpdateInterval(500);
   };
@@ -136,12 +137,18 @@ export default class AccelerometerSensor extends React.Component {
           }]})
       }
     );
+    this._saveSubscription = setInterval(() => {
+      this._saveData();
+    }, 5000);
   };
 
   _unsubscribe = () => {
     this._subscription && this._subscription.remove();
     this._subscription = null;
-    axios.post('https://potholes-api.herokuapp.com/raw', this.state.data)
+    // console.log('clearing timeout')
+    clearTimeout(this._saveSubscription)
+    // console.log('timeout cleared')
+    this._saveData(this.state.data);
   };
 
   _getLocationAsync = async () => {
@@ -155,6 +162,16 @@ export default class AccelerometerSensor extends React.Component {
     let location = await Location.getCurrentPositionAsync({});
     this.props.setLocation(location);
   };
+
+  _saveData = () => {
+    // console.log('saving data')
+    const postData = this.state.data.filter(d => d.magnitude > 1.3)
+    this.setState({data: []}, () => {
+      if (postData.length > 0) {
+        axios.post(dataUrl, postData)
+      }
+    })
+  }
 
   render () {
     let {
@@ -179,7 +196,7 @@ export default class AccelerometerSensor extends React.Component {
           <TouchableOpacity onPress={this._record} style={styles.button}>
             {!this.state.subscribed && <View>
               <FontAwesome name="play" size={32} color="green" />
-              <Text>Start</Text>
+              <Text>Record</Text>
             </View>}
             {this.state.subscribed && <View>
               <FontAwesome name="stop" size={32} color="red" />
