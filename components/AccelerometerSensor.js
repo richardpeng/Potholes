@@ -9,6 +9,7 @@ import {
 } from 'react-native-chart-kit'
 import axios from 'axios'
 import { FontAwesome } from '@expo/vector-icons';
+import Emoji from 'react-native-emoji';
 
 const dataUrl = 'https://potholes-api.herokuapp.com/raw'
 
@@ -21,6 +22,9 @@ export default class AccelerometerSensor extends React.Component {
     duration: 5000,
     errorMessage: null,
     appState: AppState.currentState,
+    mag: 0,
+    emojiMag: 0,
+    emoji: 'blush'
   };
 
   componentDidMount () {
@@ -120,6 +124,7 @@ export default class AccelerometerSensor extends React.Component {
         const {speed, heading, longitude, latitude, altitude, accuracy, altitudeAccuracy} = this.state.locationData.coords;
         const magnitude = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2))
         this.setState({
+          mag: magnitude,
           data: [
           ...this.state.data, {
               x,
@@ -135,6 +140,7 @@ export default class AccelerometerSensor extends React.Component {
               altitudeAccuracy,
               time: (new Date).getTime(),
           }]})
+        this.setEmoji(magnitude)
       }
     );
     this._saveSubscription = setInterval(() => {
@@ -173,25 +179,63 @@ export default class AccelerometerSensor extends React.Component {
     })
   }
 
-  render () {
-    let {
-      x,
-      y,
-      z,
-    } = this.state.accelerometerData;
-    const mag = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2))
-    const time = Date.now()
-    let text = 'Waiting..';
-    if (this.state.errorMessage) {
-      text = this.state.errorMessage;
-    } else if (this.state.locationData) {
-      text = JSON.stringify(this.state.locationData);
+  getEmoji = (mag) => {
+    if (mag < 1.4) {
+      return 'blush'
+    } else if (mag < 2) {
+      return 'neutral_face'
+    } else if (mag < 3) {
+      return 'fearful'
+    } else {
+      return 'scream'
     }
+  }
+
+  setEmoji = (mag) => {
+    if (mag > this.state.emojiMag) {
+      this.setState({
+        emojiMag: mag,
+        emoji: this.getEmoji(mag),
+      })
+      // console.log(this._emojiTimeout)
+      // if (this._emojiTimeout) {
+      //   clearTimeout(this._emojiTimeout.remove())
+      // }
+      this._emojiTimeout && clearTimeout(this._emojiTimeout)
+      this._emojiTimeout = setTimeout(() => {
+        this.setState({
+          emojiMag: 0,
+          emoji: this.getEmoji(0),
+        })
+      }, 2000)
+    }
+  }
+
+  render () {
+    // let {
+    //   x,
+    //   y,
+    //   z,
+    // } = this.state.accelerometerData;
+    // let mag = Math.sqrt(Math.pow(x, 2) + Math.pow(y, 2) + Math.pow(z, 2))
+    // if (isNaN(mag)) {
+    //   mag = 0
+    // }
+    // const time = Date.now()
+    // let text = 'Waiting..';
+    // if (this.state.errorMessage) {
+    //   text = this.state.errorMessage;
+    // } else if (this.state.locationData) {
+    //   text = JSON.stringify(this.state.locationData);
+    // }
     return (
       <View style={styles.sensor}>
         {/*<View>*/}
         {/*  <Text style={styles.paragraph}>Location: {text}</Text>*/}
         {/*</View>*/}
+        <View style={styles.emojiContainer}>
+          <Emoji name={this.state.emoji} style={{fontSize: 100}} />
+        </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity onPress={this._record} style={styles.button}>
             {!this.state.subscribed && <View>
@@ -285,4 +329,9 @@ const styles = StyleSheet.create({
     marginTop: 15,
     paddingHorizontal: 10,
   },
+  emojiContainer: {
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    justifyContent: 'center',
+  }
 });
