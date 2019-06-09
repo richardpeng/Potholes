@@ -25,7 +25,7 @@ class Map extends React.Component {
   render() {
     return <View>
       {this.state.loaded && <WebView
-        source={{uri: `http://10.248.32.249:3000/map?lat=${this.state.location.latitude}&lng=${this.state.location.longitude}`}}
+        source={{uri: `https://potholes-api.herokuapp.com/raw?lat=${this.state.location.latitude}&lng=${this.state.location.longitude}`}}
         style={{
           width: Dimensions.get('window').width,
           height: Dimensions.get('window').height/2,
