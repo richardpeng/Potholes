@@ -11,9 +11,9 @@ import {
 } from 'react-native';
 
 import { MonoText } from '../components/StyledText';
-import AccelerometerSensor from '../components/AccelerometerSensor';
 // import WebViewLeaflet from "react-native-webview-leaflet";
 import MapView from 'react-native-maps';
+import Map from '../components/Map'
 
 export default function HomeScreen() {
   // const mapboxToken = 'pk.eyJ1IjoicmljaGFyZHBlbmciLCJhIjoiVU0xNkJWdyJ9.FTabBJ4y83aHdWN3YPZSrA'
@@ -31,7 +31,7 @@ export default function HomeScreen() {
 
   return (
     <View style={styles.container}>
-      <ScrollView
+      <View
         style={styles.container}
         contentContainerStyle={styles.contentContainer}>
         {/*<View style={styles.welcomeContainer}>*/}
@@ -57,61 +57,17 @@ export default function HomeScreen() {
           {/*<Text style={styles.getStartedText}>*/}
           {/*  Change this text and your app will automatically reload. Yay!*/}
           {/*</Text>*/}
-          {/*<WebViewLeaflet*/}
-          {/*  ref={component => (this.webViewLeaflet = component)}*/}
-          {/*  // Optional: a callback that will be called when the map is loaded*/}
-          {/*  // onLoad={this.onLoad}*/}
-
-          {/*  // Optional: the component that will receive map events}*/}
-          {/*  eventReceiver={this}*/}
-
-          {/*  // Optional: the center of the displayed map*/}
-          {/*  // centerPosition={this.state.mapCenterPosition}*/}
-
-          {/*  // Optional: a list of markers that will be displayed on the map*/}
-          {/*  // markers={this.state.markers}*/}
-
-          {/*  // Required: the map layers that will be displayed on the map. See below for a description of the map layers object*/}
-          {/*  mapLayers={mapLayers}*/}
-
-          {/*  // Optional: display a marker to be at a given location*/}
-          {/*  // ownPositionMarker={{*/}
-          {/*  //   coords: this.state.currentLocation,*/}
-          {/*  //   icon: "❤️",*/}
-          {/*  //   size: [24, 24],*/}
-          {/*  //   animation: {*/}
-          {/*  //     name: "pulse",*/}
-          {/*  //     duration: ".5",*/}
-          {/*  //     delay: 0,*/}
-          {/*  //     interationCount: "infinite"*/}
-          {/*  //   }*/}
-          {/*  // }}*/}
-
-          {/*  // Optional (defaults to false): display a button that centers the map on the coordinates of ownPostionMarker. Requires that "ownPositionMarker" prop be set*/}
-          {/*  // centerButton={true}*/}
-
-          {/*  // Optional (defaults to false): cluster icons that are in the same area*/}
-          {/*  // useMarkerClustering={true}*/}
-          {/*/>*/}
-          <MapView
-            initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-          />
-          {/*<AccelerometerSensor/>*/}
+          <Map/>
         </View>
 
-        <View style={styles.helpContainer}>
-          <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>
-            <Text style={styles.helpLinkText}>
-              Help, it didn’t automatically reload!
-            </Text>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+        {/*<View style={styles.helpContainer}>*/}
+        {/*  <TouchableOpacity onPress={handleHelpPress} style={styles.helpLink}>*/}
+        {/*    <Text style={styles.helpLinkText}>*/}
+        {/*      Help, it didn’t automatically reload!*/}
+        {/*    </Text>*/}
+        {/*  </TouchableOpacity>*/}
+        {/*</View>*/}
+      </View>
 
       {/*<View style={styles.tabBarInfoContainer}>*/}
       {/*  <Text style={styles.tabBarInfoText}>*/}
@@ -197,7 +153,7 @@ const styles = StyleSheet.create({
   },
   getStartedContainer: {
     alignItems: 'center',
-    marginHorizontal: 50,
+    // marginHorizontal: 50,
   },
   homeScreenFilename: {
     marginVertical: 7,

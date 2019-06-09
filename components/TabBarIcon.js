@@ -4,8 +4,9 @@ import { Ionicons } from '@expo/vector-icons';
 import Colors from '../constants/Colors';
 
 export default function TabBarIcon(props) {
+  const TagName = props.tag;
   return (
-    <Ionicons
+    <TagName
       name={props.name}
       size={26}
       style={{ marginBottom: -3 }}

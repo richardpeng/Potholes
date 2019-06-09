@@ -9,6 +9,7 @@ import TabBarIcon from '../components/TabBarIcon';
 import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import { Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 const HomeStack = createStackNavigator({
   Home: HomeScreen,
@@ -18,10 +19,11 @@ HomeStack.navigationOptions = {
   tabBarLabel: 'Home',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
+      tag={MaterialCommunityIcons}
       focused={focused}
       name={
         Platform.OS === 'ios'
-          ? `ios-information-circle${focused ? '' : '-outline'}`
+          ? `home${focused ? '' : '-outline'}`
           : 'md-information-circle'
       }
     />
@@ -33,12 +35,21 @@ const LinksStack = createStackNavigator({
 });
 
 LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+  tabBarLabel: 'About',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
+      tag={Ionicons}
       focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-information-circle${focused ? '' : '-outline'}`
+          : 'md-information-circle'
+      }
     />
+    // <TabBarIcon
+    //   focused={focused}
+    //   name={Platform.OS === 'ios' ? 'ios-link' : 'md-link'}
+    // />
   ),
 };
 
@@ -56,8 +67,9 @@ SettingsStack.navigationOptions = {
   ),
 };
 
+// TODO: make about show up as main screen the first time you load the app
 export default createBottomTabNavigator({
   HomeStack,
   LinksStack,
-  SettingsStack,
+  // SettingsStack,
 });
