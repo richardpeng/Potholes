@@ -25,8 +25,7 @@ export default function LinksScreen() {
     <ScrollView style={styles.container}>
       {/*<ExpoLinksView />*/}
       <Text style={styles.titleText}>
-        Road Radar shows you the conditions of the roads that you and others have traveled on. Also, you can
-        contribute valuable data on road conditions to help municipalities identify roads that are need of repair.
+        Road Radar reports the road conditions that users have traveled on. You can drive with this application to help your city locate sections of roads that are in critical need of repair.
       </Text>
       <Text>
         Privacy Policy: No personally identifiable information is collected. The data sent to the server is completely
