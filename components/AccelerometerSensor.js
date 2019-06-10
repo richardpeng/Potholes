@@ -140,6 +140,7 @@ export default class AccelerometerSensor extends React.Component {
               altitude,
               accuracy,
               altitudeAccuracy,
+              location: `${latitude},${longitude}`,
               time: (new Date).getTime(),
           }]})
         this.setEmoji(magnitude)
