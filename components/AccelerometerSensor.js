@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View, Platform } from 'react-native';
 import { Accelerometer } from 'expo-sensors'
 import { Dimensions, TextInput, AppState } from 'react-native'
+import { activateKeepAwake, deactivateKeepAwake } from 'expo-keep-awake';
 import { Constants, Location, Permissions } from 'expo';
 const screenWidth = Dimensions.get('window').width
 import {
@@ -117,6 +118,7 @@ export default class AccelerometerSensor extends React.Component {
   };
 
   _subscribe = () => {
+    activateKeepAwake()
     this._subscription = Accelerometer.addListener(
       accelerometerData => {
         this.setState({accelerometerData});
@@ -149,6 +151,7 @@ export default class AccelerometerSensor extends React.Component {
   };
 
   _unsubscribe = () => {
+    deactivateKeepAwake()
     this._subscription && this._subscription.remove();
     this._subscription = null;
     // console.log('clearing timeout')
