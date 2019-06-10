@@ -147,7 +147,7 @@ export default class AccelerometerSensor extends React.Component {
     );
     this._saveSubscription = setInterval(() => {
       this._saveData();
-    }, 5000);
+    }, 10000);
   };
 
   _unsubscribe = () => {
@@ -179,6 +179,7 @@ export default class AccelerometerSensor extends React.Component {
       if (postData.length > 0) {
         axios.post(dataUrl, postData)
       }
+      this.props.setLocation(this.state.locationData)
     })
   }
 
